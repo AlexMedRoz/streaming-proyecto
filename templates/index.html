@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Gráficos de Streaming</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #1f1f1f;
+      padding: 40px 20px 30px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      border-bottom: 2px solid #00bcd4;
+    }
+
+    header h1 {
+      color: #00bcd4;
+      font-size: 2.5em;
+      margin-bottom: 15px;
+    }
+
+    header .intro {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.2em;
+      line-height: 1.6;
+      color: #dddddd;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      padding: 40px 40px 20px;
+      justify-content: center;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #1e1e1e;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.03);
+    }
+
+    .tooltip-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 16px 10px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .card:hover .tooltip-info {
+      opacity: 1;
+    }
+
+    .tooltip-info h3 {
+      margin: 0;
+      font-size: 1.1em;
+      color: #00bcd4;
+    }
+
+    .tooltip-info p {
+      font-size: 0.9em;
+      margin-top: 6px;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .full-width img {
+      max-width: 100%;
+      margin: 0 auto;
+      display: block;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 25px;
+      background: #1f1f1f;
+      color: white;
+      text-align: center;
+      border-top: 2px solid #00bcd4;
+      font-size: 1.05em;
+    }
+
+    footer h3 {
+      margin-bottom: 10px;
+      color: #00bcd4;
+    }
+
+    footer p {
+      margin: 4px 0;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+        padding: 30px 20px;
+      }
+
+      .full-width {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Panel de Gráficos de Streaming</h1>
+    <div class="intro">
+      Este panel interactivo presenta una visualización exploratoria de datos obtenidos de plataformas de streaming. A través de gráficos estadísticos, se analizan métricas como calificación promedio, ingresos anuales, tiempo de uso y distribución por plataforma, con el fin de detectar patrones y relaciones significativas entre variables clave del comportamiento del usuario.
+    </div>
+  </header>
+
+  <div class="grid">
+    {% for grafico in graficos %}
+      {% if loop.index <= 4 %}
+        <div class="card">
+          <img src="{{ url_for('static', filename=grafico.imagen) }}" alt="{{ grafico.titulo }}">
+          <div class="tooltip-info">
+            <h3>{{ grafico.titulo }}</h3>
+            <p>
+              {% if grafico.titulo == 'Frecuencia de Calificaciones' %}
+                Muestra la frecuencia con la que se repite cada calificación promedio asignada a las plataformas.
+              {% elif grafico.titulo == 'Histograma de Ingresos Anuales' %}
+                Analiza la distribución de los ingresos anuales (en millones) generados por cada plataforma.
+              {% elif grafico.titulo == 'Boxplot de Tiempo Usado' %}
+                Visualiza la dispersión del tiempo de visualización por parte de los usuarios en las plataformas.
+              {% elif grafico.titulo == 'Boxplot de Ingresos por Plataforma' %}
+                Compara gráficamente los ingresos anuales entre diferentes plataformas con valores mínimos, máximos y outliers.
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      {% elif loop.index == 5 %}
+        <div class="card full-width">
+          <img src="{{ url_for('static', filename=grafico.imagen) }}" alt="{{ grafico.titulo }}">
+          <div class="tooltip-info">
+            <h3>{{ grafico.titulo }}</h3>
+            <p>Este mapa de calor representa la correlación entre variables numéricas, como número de películas, suscriptores, calificación promedio, etc.</p>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <footer>
+    <h3>PROYECTO - MINERÍA DE DATOS 7CM77</h3>
+    <p><strong>INTEGRANTES:</strong></p>
+    <p>Daniela Sales Cordova</p>
+    <p>Sánchez Sánchez Alexander</p>
+    <p>Medina De la Rosa Alex</p>
+  </footer>
+
+</body>
+</html>
