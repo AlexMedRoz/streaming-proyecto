@@ -11,7 +11,6 @@ df_csv = pd.read_csv("Streaming_dataset.csv")
 
 
 # 1. Frecuencia de calificaciones (Barras)
-py
 df_csv['Calificación Agrupada'] = df_csv['Calificación Promedio /5'].round(1)
 conteo_calificacion = df_csv['Calificación Agrupada'].value_counts().sort_index()
 conteo_calificacion_df = conteo_calificacion.reset_index()
